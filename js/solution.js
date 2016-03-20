@@ -10,42 +10,6 @@
     var Y_INDEX = 1;
     var timer = 0;
     
-    function partRender(maze) {        
-        var tab = document.getElementsByClassName("maze")[0];        
-        for (var i = 0; i < tab.childNodes.length; i++) {
-            for (var j = 0; j < tab.childNodes[i].childNodes.length; j++) {                
-                var cell = tab.childNodes[i].childNodes[j];
-                var type;
-                switch (maze[i][j]) {                    
-                    case WALL:
-                        type = 'wall';
-                        break;
-
-                    case PATH:
-                        type = 'path';
-                        break;
-
-                    case CURRENT:
-                        type = 'current';
-                        break;
-                    case IN_QUEUE:
-                        type = 'in_queue';
-                        break;
-                    case SEEN:
-                        type = 'seen';
-                        break;
-                    default:
-                        type = undefined;
-                }
-                
-                if (type != undefined) {
-                    tab.childNodes[i].childNodes[j].className = "maze__cell maze__cell_" + type;   
-                }                
-            }
-        }        
-    }
-
-    
     /**
      * Функция находит путь к выходу и возвращает найденный маршрут
      *
@@ -123,9 +87,20 @@
                           
         function postponeRender(x, y, val, special_interval) {
             setTimeout(
-                function () {                   
-                    maze[y][x] = val;
-                    partRender(maze);
+                function () {                                       
+                    var type;
+                    switch (val) {
+                        case PATH:
+                            type = 'path';
+                            break;
+                        case IN_QUEUE:                       
+                            type = 'in_queue'; 
+                            break;                           
+                        case SEEN:
+                            type = 'seen';
+                            break;                            
+                    }                           
+                    document.getElementsByClassName("maze")[0].childNodes[y].childNodes[x].className =  "maze__cell maze__cell_" + type;
                 },
                 timer
             );
